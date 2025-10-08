@@ -42,7 +42,7 @@ export default defineConfig((/* ctx */) => {
 
       // ✅ เพิ่ม distDir และ publicPath
       distDir: 'dist/quasar',
-      publicPath: '/',
+      publicPath: '/6704101359-Patnaree-Wanphila/',
 
       // ✅ (optional) เปิด analyze ไว้ดูโครงสร้าง bundle
       // analyze: true,
