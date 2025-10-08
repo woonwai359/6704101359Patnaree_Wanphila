@@ -1,21 +1,22 @@
-// Configuration สำหรับแอป Quasar ของเรา
+// Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
-import { defineConfig } from '#q-app/wrappers' // นำเข้าฟังก์ชัน defineConfig จาก Quasar wrapper
+import { defineConfig } from '#q-app/wrappers'
 
 export default defineConfig((/* ctx */) => {
   return {
-    // preFetch feature สำหรับดึงข้อมูลล่วงหน้า
+    // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
 
     // app boot file (/src/boot)
-    // ไฟล์ boot จะถูกรันก่อน main.js
+    // --> boot files are part of "main.js"
+    // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [],
 
-    // กำหนด CSS ของโปรเจค
+    // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ['app.scss'],
 
-    // กำหนด font และ icon ชุดพิเศษ
+    // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
       // 'mdi-v7',
@@ -23,113 +24,178 @@ export default defineConfig((/* ctx */) => {
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
-      // 'roboto-font-latin-ext', // ใช้หรือไม่ก็ได้
+      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // ฟอนต์หลัก
-      'material-icons', // ชุดไอคอน Material
+      'roboto-font', // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
     ],
 
-    // การตั้งค่า build ของโปรเจค
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
       target: {
-        browser: ['es2022', 'firefox115', 'chrome115', 'safari14'], // target browser
-        node: 'node20', // target Node.js
+        browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
+        node: 'node20',
       },
 
-      vueRouterMode: 'hash', // ใช้ hash mode ของ Vue Router
-      // vueRouterBase,
-      // vueDevtools,
-      // vueOptionsAPI: false,
+      // ✅ เปลี่ยน router mode เป็น history (เหมาะกับ deploy)
+      vueRouterMode: 'history',
 
-      // rebuildCache: true, // rebuild cache ของ Vite/linter
+      // ✅ เพิ่ม distDir และ publicPath
+      distDir: 'dist/quasar',
+      publicPath: '/',
 
-      // publicPath: '/',
+      // ✅ (optional) เปิด analyze ไว้ดูโครงสร้าง bundle
       // analyze: true,
-      // env: {},
-      // rawDefine: {},
-      // ignorePublicFolder: true,
-      // minify: false,
-      // polyfillModulePreload: true,
-      // distDir
-
-      // extendViteConf (viteConf) {},
-      // viteVuePluginOptions: {},
 
       vitePlugins: [
         [
-          'vite-plugin-checker', // ตรวจสอบ ESLint
+          'vite-plugin-checker',
           {
             eslint: {
-              lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"', // คำสั่ง lint
+              lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"',
               useFlatConfig: true,
             },
           },
-          { server: false }, // ไม่เปิด server ของ plugin
+          { server: false },
         ],
       ],
     },
 
-    // ตั้งค่า dev server
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
       // https: true,
-      open: true, // เปิด browser อัตโนมัติ
+      open: true, // opens browser window automatically
     },
 
-    // ตั้งค่า Quasar Framework
+    // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       config: {},
 
-      // iconSet: 'material-icons',
-      // lang: 'en-US',
+      // iconSet: 'material-icons', // Quasar icon set
+      // lang: 'en-US', // Quasar language pack
 
+      // For special cases outside of where the auto-import strategy can have an impact
+      // (like functional components as one of the examples),
+      // you can manually specify Quasar components/directives to be available everywhere:
+      //
       // components: [],
       // directives: [],
 
-      // เพิ่ม Quasar plugin
-      plugins: ['Notify'], // ← เพิ่ม Notify plugin สำหรับแจ้งเตือน
+      // Quasar plugins
+      plugins: [],
     },
 
-    // animations: 'all', // ใช้ animation ทั้งหมด
+    // animations: 'all', // --- includes all animations
+    // https://v2.quasar.dev/options/animations
     animations: [],
 
-    // SSR configuration
+    // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#sourcefiles
+    // sourceFiles: {
+    //   rootComponent: 'src/App.vue',
+    //   router: 'src/router/index',
+    //   store: 'src/store/index',
+    //   pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
+    //   pwaServiceWorker: 'src-pwa/custom-service-worker',
+    //   pwaManifestFile: 'src-pwa/manifest.json',
+    //   electronMain: 'src-electron/electron-main',
+    //   electronPreload: 'src-electron/electron-preload'
+    //   bexManifestFile: 'src-bex/manifest.json
+    // },
+
+    // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
     ssr: {
-      prodPort: 3000, // port สำหรับ production
-      middlewares: ['render'], // middleware สำหรับ SSR
-      pwa: false, // ไม่ใช้ PWA กับ SSR
+      prodPort: 3000, // The default port that the production server should use
+      // (gets superseded if process.env.PORT is specified at runtime)
+
+      middlewares: [
+        'render', // keep this as last one
+      ],
+
+      // extendPackageJson (json) {},
+      // extendSSRWebserverConf (esbuildConf) {},
+
+      // manualStoreSerialization: true,
+      // manualStoreSsrContextInjection: true,
+      // manualStoreHydration: true,
+      // manualPostHydrationTrigger: true,
+
+      pwa: false,
+      // pwaOfflineHtmlFilename: 'offline.html', // do NOT use index.html as name!
+
+      // pwaExtendGenerateSWOptions (cfg) {},
+      // pwaExtendInjectManifestOptions (cfg) {}
     },
 
-    // PWA configuration
+    // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'GenerateSW', // ใช้ Generate Service Worker
+      workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       // swFilename: 'sw.js',
       // manifestFilename: 'manifest.json',
+      // extendManifestJson (json) {},
+      // useCredentialsForManifestTag: true,
+      // injectPwaMetaTags: false,
+      // extendPWACustomSWConf (esbuildConf) {},
+      // extendGenerateSWOptions (cfg) {},
+      // extendInjectManifestOptions (cfg) {}
     },
 
-    // Cordova configuration
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-cordova-apps/configuring-cordova
     cordova: {
-      // noIosLegacyBuildFlag: true,
+      // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
     },
 
-    // Capacitor configuration
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true, // ซ่อน splashscreen
+      hideSplashscreen: true,
     },
 
-    // Electron configuration
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
     electron: {
-      preloadScripts: ['electron-preload'], // preload script
-      inspectPort: 5858, // port debug
-      bundler: 'packager', // bundler
-      packager: {}, // config packager
+      // extendElectronMainConf (esbuildConf) {},
+      // extendElectronPreloadConf (esbuildConf) {},
+
+      // extendPackageJson (json) {},
+
+      // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
+      preloadScripts: ['electron-preload'],
+
+      // specify the debugging port to use for the Electron app when running in development mode
+      inspectPort: 5858,
+
+      bundler: 'packager', // 'packager' or 'builder'
+
+      packager: {
+        // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
+        // OS X / Mac App Store
+        // appBundleId: '',
+        // appCategoryType: '',
+        // osxSign: '',
+        // protocol: 'myapp://path',
+        // Windows only
+        // win32metadata: { ... }
+      },
+
       builder: {
-        appId: 'final6704101359', // กำหนด appId
+        // https://www.electron.build/configuration/configuration
+
+        appId: '6704101359-Patnaree-Wanphila ',
       },
     },
 
-    // Browser Extension (BEX)
+    // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
     bex: {
-      extraScripts: [], // สคริปต์เพิ่มเติมสำหรับ BEX
+      // extendBexScriptsConf (esbuildConf) {},
+      // extendBexManifestJson (json) {},
+
+      /**
+       * The list of extra scripts (js/ts) not in your bex manifest that you want to
+       * compile and use in your browser extension. Maybe dynamic use them?
+       *
+       * Each entry in the list should be a relative filename to /src-bex/
+       *
+       * @example [ 'my-script.ts', 'sub-folder/my-other-script.js' ]
+       */
+      extraScripts: [],
     },
   }
 })
